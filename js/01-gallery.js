@@ -32,9 +32,7 @@ function createGallaryItemsMarkup(galleryItems) {
 function onImageClick(e) {
   e.preventDefault();
 
-  if (!e.target.classList.contains('gallery__image')) {
-    return;
-  }
+  if (e.target.nodeName !== 'IMG') return;
 
   const originalSizeImageLink = e.target.dataset.source;
 
@@ -50,16 +48,21 @@ function openModal(link) {
 
   modal.show();
 
-  galleryRef.addEventListener('keydown', onEscKeyPress);
+  window.addEventListener('keydown', closeModalOnEscPress);
 
-  function onEscKeyPress(e) {
-    if (e.code === 'Escape') {
-      closeModal();
-    }
+  function closeModalOnEscPress(e) {
+    const code = e.code;
+    onEscKeyPress(code, modal);
   }
+}
 
-  function closeModal() {
-    galleryRef.removeEventListener('keydown', onEscKeyPress);
-    modal.close();
+function onEscKeyPress(code, modal) {
+  if (code === 'Escape') {
+    closeModal(modal);
   }
+}
+
+function closeModal(modal) {
+  window.removeEventListener('keydown', onEscKeyPress);
+  modal.close();
 }
