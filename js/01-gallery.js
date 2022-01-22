@@ -53,16 +53,17 @@ function openModal(link) {
   function closeModalOnEscPress(e) {
     const code = e.code;
     onEscKeyPress(code, modal);
+    window.removeEventListener('keydown', closeModalOnEscPress);
   }
 }
 
 function onEscKeyPress(code, modal) {
   if (code === 'Escape') {
+    console.log(code);
     closeModal(modal);
   }
 }
 
 function closeModal(modal) {
-  window.removeEventListener('keydown', onEscKeyPress);
   modal.close();
 }
